@@ -40,7 +40,15 @@ async function deletePost(id: string): Promise<void> {
 const Post: React.FC<PostProps> = (props) => {
   const { data: session, status } = useSession();
   if (status === 'loading') {
-    return <div>Authenticating ...</div>;
+    return (
+      <Layout>
+        <div className="max-w-4xl mx-auto p-8">
+          <div className="text-center">
+            <div className="text-gray-600">Authenticating ...</div>
+          </div>
+        </div>
+      </Layout>
+    );
   }
   const userHasValidSession = Boolean(session);
   const postBelongsToUser = session?.user?.email === props.author?.email;
@@ -51,38 +59,31 @@ const Post: React.FC<PostProps> = (props) => {
 
   return (
     <Layout>
-      <div>
-        <h2>{title}</h2>
-        <p>By {props?.author?.name || 'Unknown author'}</p>
-        <ReactMarkdown children={props.content} />
-        {!props.published && userHasValidSession && postBelongsToUser && (
-          <button onClick={() => publishPost(props.id)}>Publish</button>
-        )}
-        {userHasValidSession && postBelongsToUser && (
-          <button onClick={() => deletePost(props.id)}>Delete</button>
-        )}
+      <div className="max-w-4xl mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">{title}</h2>
+        <p className="text-gray-600 mb-6">By {props?.author?.name || 'Unknown author'}</p>
+        <div className="prose max-w-none">
+          <ReactMarkdown children={props.content} />
+        </div>
+        <div className="mt-8 flex gap-4">
+          {!props.published && userHasValidSession && postBelongsToUser && (
+            <button 
+              onClick={() => publishPost(props.id)}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            >
+              Publish
+            </button>
+          )}
+          {userHasValidSession && postBelongsToUser && (
+            <button 
+              onClick={() => deletePost(props.id)}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded transition-colors"
+            >
+              Delete
+            </button>
+          )}
+        </div>
       </div>
-      <style jsx>{`
-        .page {
-          background: var(--geist-background);
-          padding: 2rem;
-        }
-
-        .actions {
-          margin-top: 2rem;
-        }
-
-        button {
-          background: #ececec;
-          border: 0;
-          border-radius: 0.125rem;
-          padding: 1rem 2rem;
-        }
-
-        button + button {
-          margin-left: 1rem;
-        }
-      `}</style>
     </Layout>
   );
 };

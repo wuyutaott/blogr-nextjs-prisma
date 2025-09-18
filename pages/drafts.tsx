@@ -38,38 +38,31 @@ const Drafts: React.FC<Props> = (props) => {
   if (!session) {
     return (
       <Layout>
-        <h1>My Drafts</h1>
-        <div>You need to be authenticated to view this page.</div>
+        <div className="max-w-4xl mx-auto">
+          <h1 className="text-3xl font-bold text-gray-900 mb-8">My Drafts</h1>
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6 text-yellow-800">
+            You need to be authenticated to view this page.
+          </div>
+        </div>
       </Layout>
     );
   }
 
   return (
     <Layout>
-      <div className="page">
-        <h1>My Drafts</h1>
-        <main>
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-3xl font-bold text-gray-900 mb-8">My Drafts</h1>
+        <main className="space-y-6">
           {props.drafts.map((post) => (
-            <div key={post.id} className="post">
+            <div 
+              key={post.id} 
+              className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow duration-200 cursor-pointer border border-gray-200"
+            >
               <Post post={post} />
             </div>
           ))}
         </main>
       </div>
-      <style jsx>{`
-        .post {
-          background: var(--geist-background);
-          transition: box-shadow 0.1s ease-in;
-        }
-
-        .post:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
-
-        .post + .post {
-          margin-top: 2rem;
-        }
-      `}</style>
     </Layout>
   );
 };

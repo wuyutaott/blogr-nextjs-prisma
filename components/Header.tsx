@@ -11,31 +11,12 @@ const Header: React.FC = () => {
   const { data: session, status } = useSession();
 
   let left = (
-    <div className="left">
+    <div className="flex space-x-4">
       <Link href="/">
-        <a className="bold" data-active={isActive('/')}>
+        <a className={`font-bold ${isActive('/') ? 'text-gray-500' : 'text-gray-900 hover:text-blue-600'}`}>
           Feed
         </a>
       </Link>
-      <style jsx>{`
-        .bold {
-          font-weight: bold;
-        }
-
-        a {
-          text-decoration: none;
-          color: var(--geist-foreground);
-          display: inline-block;
-        }
-
-        .left a[data-active='true'] {
-          color: gray;
-        }
-
-        a + a {
-          margin-left: 1rem;
-        }
-      `}</style>
     </div>
   );
 
@@ -43,167 +24,76 @@ const Header: React.FC = () => {
 
   if (status === 'loading') {
     left = (
-      <div className="left">
+      <div className="flex space-x-4">
         <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
+          <a className={`font-bold ${isActive('/') ? 'text-gray-500' : 'text-gray-900 hover:text-blue-600'}`}>
             Feed
           </a>
         </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          .left a[data-active='true'] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
       </div>
     );
     right = (
-      <div className="right">
-        <p>Validating session ...</p>
-        <style jsx>{`
-          .right {
-            margin-left: auto;
-          }
-        `}</style>
+      <div className="ml-auto">
+        <p className="text-gray-600">Validating session ...</p>
       </div>
     );
   }
 
   if (!session) {
     right = (
-      <div className="right">
+      <div className="ml-auto">
         <Link href="/api/auth/signin">
-          <a data-active={isActive('/signup')}>Log in</a>
+          <a className="border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-50 transition-colors">
+            Log in
+          </a>
         </Link>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid var(--geist-foreground);
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-        `}</style>
       </div>
     );
   }
 
   if (session) {
     left = (
-      <div className="left">
+      <div className="flex space-x-4">
         <Link href="/">
-          <a className="bold" data-active={isActive('/')}>
+          <a className={`font-bold ${isActive('/') ? 'text-gray-500' : 'text-gray-900 hover:text-blue-600'}`}>
             Feed
           </a>
         </Link>
         <Link href="/drafts">
-          <a data-active={isActive('/drafts')}>My drafts</a>
+          <a className={`${isActive('/drafts') ? 'text-gray-500' : 'text-gray-900 hover:text-blue-600'}`}>
+            My drafts
+          </a>
         </Link>
-        <style jsx>{`
-          .bold {
-            font-weight: bold;
-          }
-
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          .left a[data-active='true'] {
-            color: gray;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-        `}</style>
       </div>
     );
     right = (
-      <div className="right">
-        <p>
+      <div className="ml-auto flex items-center space-x-4">
+        <p className="text-sm text-gray-600">
           {session.user.name} ({session.user.email})
         </p>
         <Link href="/create">
-          <button>
-            <a>New post</a>
-          </button>
+          <a className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors">
+            New post
+          </a>
         </Link>
-        <button onClick={() => signOut()}>
-          <a>Log out</a>
+        <button 
+          onClick={() => signOut()}
+          className="border border-gray-300 px-4 py-2 rounded text-gray-700 hover:bg-gray-50 transition-colors"
+        >
+          Log out
         </button>
-        <style jsx>{`
-          a {
-            text-decoration: none;
-            color: var(--geist-foreground);
-            display: inline-block;
-          }
-
-          p {
-            display: inline-block;
-            font-size: 13px;
-            padding-right: 1rem;
-          }
-
-          a + a {
-            margin-left: 1rem;
-          }
-
-          .right {
-            margin-left: auto;
-          }
-
-          .right a {
-            border: 1px solid var(--geist-foreground);
-            padding: 0.5rem 1rem;
-            border-radius: 3px;
-          }
-
-          button {
-            border: none;
-          }
-        `}</style>
       </div>
     );
   }
 
   return (
-    <nav>
-      {left}
-      {right}
-      <style jsx>{`
-        nav {
-          display: flex;
-          padding: 2rem;
-          align-items: center;
-        }
-      `}</style>
+    <nav className="bg-white shadow-sm border-b border-gray-200">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          {left}
+          {right}
+        </div>
+      </div>
     </nav>
   );
 };

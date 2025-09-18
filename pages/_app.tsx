@@ -1,6 +1,7 @@
 import { SessionProvider } from 'next-auth/react';
 import { AppProps } from "next/app";
 import { Session } from 'next-auth';
+import '../styles/globals.css';
 
 interface CustomAppProps extends AppProps {
   pageProps: {
